@@ -15,9 +15,8 @@ import {
   Transition,
   UnstyledButton,
   useMantineColorScheme,
-  useMantineTheme,
 } from "@mantine/core";
-import { useColorScheme, useDisclosure } from "@mantine/hooks";
+import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { ReactNode, useEffect, useState } from "react";
