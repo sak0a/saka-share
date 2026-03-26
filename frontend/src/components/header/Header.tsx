@@ -230,15 +230,12 @@ const Header = () => {
       label: t("navbar.upload"),
       isUpload: true,
     },
-    {
-      component: <ThemeToggle />,
-    },
-    {
-      component: <LanguageBadge />,
-    },
-    {
-      component: <ActionAvatar />,
-    },
+  ];
+
+  const rightLinks: ReactNode[] = [
+    <ThemeToggle key="theme" />,
+    <LanguageBadge key="lang" />,
+    <ActionAvatar key="avatar" />,
   ];
 
   let unauthenticatedLinks: NavLink[] = [
@@ -268,10 +265,10 @@ const Header = () => {
       label: t("navbar.signup"),
     });
 
-  unauthenticatedLinks.push(
-    { component: <ThemeToggle /> },
-    { component: <LanguageBadge /> },
-  );
+  const unauthRightLinks: ReactNode[] = [
+    <ThemeToggle key="theme" />,
+    <LanguageBadge key="lang" />,
+  ];
 
   const { classes, cx } = useStyles();
   const items = (
@@ -314,6 +311,8 @@ const Header = () => {
       })}
     </>
   );
+  const currentRightLinks = user ? rightLinks : unauthRightLinks;
+
   return (
     <MantineHeader height={HEADER_HEIGHT} mb={40} className={classes.root}>
       <Container className={classes.header}>
@@ -327,6 +326,9 @@ const Header = () => {
           {items}
         </Group>
         <Group spacing={8} noWrap>
+          <Group spacing={8} noWrap className={classes.links}>
+            {currentRightLinks}
+          </Group>
           <Burger
             opened={opened}
             onClick={() => toggleOpened.toggle()}
@@ -337,7 +339,12 @@ const Header = () => {
         <Transition transition="pop-top-right" duration={200} mounted={opened}>
           {(styles) => (
             <Paper className={classes.dropdown} withBorder style={styles}>
-              <Stack spacing={0}>{items}</Stack>
+              <Stack spacing={0}>
+                {items}
+                <Group px="md" py="sm" spacing={8}>
+                  {currentRightLinks}
+                </Group>
+              </Stack>
             </Paper>
           )}
         </Transition>
