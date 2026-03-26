@@ -287,17 +287,17 @@ const Header = () => {
         }
         if (link.isUpload) {
           return (
-            <Link key={link.label} href={link.link ?? ""} passHref>
-              <Button
-                component="a"
-                variant="filled"
-                size="xs"
-                leftIcon={<TbUpload size={14} />}
-                onClick={() => toggleOpened.toggle()}
-              >
-                {link.label}
-              </Button>
-            </Link>
+            <Button
+              key={link.label}
+              component={Link}
+              href={link.link ?? ""}
+              variant="filled"
+              size="xs"
+              leftIcon={<TbUpload size={14} />}
+              onClick={() => toggleOpened.toggle()}
+            >
+              {link.label}
+            </Button>
           );
         }
         return (
