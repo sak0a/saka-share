@@ -1,5 +1,5 @@
 services:
-  pingvin-share:
+  saka-share:
     build: .
     restart: unless-stopped
     ports:

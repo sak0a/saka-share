@@ -1,20 +1,10 @@
-> ## ⚠️ Project Archived
->
-> After much consideration, I've chosen to focus my limited time and energy on my other project, [Pocket ID](https://github.com/pocket-id/pocket-id). As a solo developer, I've found it difficult to actively maintain multiple open source projects with the care and attention they deserve.
->
-> If you're interested in continuing this work through a fork, I'd be happy to link to it here in the README.
->
-> Thanks to all the contributors and users who have supported Pingvin Share over the years :)
+# Saka Share
 
-# <div align="center"><img  src="https://user-images.githubusercontent.com/58886915/166198400-c2134044-1198-4647-a8b6-da9c4a204c68.svg" width="40"/> </br>Pingvin Share</div>
+A self-hosted file sharing platform, forked from [Pingvin Share](https://github.com/stonith404/pingvin-share).
 
-[![](https://dcbadge.limes.pink/api/server/wHRQ9nFRcK)](https://discord.gg/wHRQ9nFRcK) [![](https://img.shields.io/badge/Crowdin-2E3340.svg?style=for-the-badge&logo=Crowdin&logoColor=white)](https://crowdin.com/project/pingvin-share) [![](https://img.shields.io/badge/sponsor-30363D?style=for-the-badge&logo=GitHub-Sponsors&logoColor=#white)](https://github.com/sponsors/stonith404)
+## Features
 
----
-
-Pingvin Share is a self-hosted file sharing platform and an alternative for WeTransfer.
-
-## ✨ Features
+### Core
 
 - Share files using a link
 - Unlimited file size (restricted only by disk space)
@@ -24,31 +14,31 @@ Pingvin Share is a self-hosted file sharing platform and an alternative for WeTr
 - Reverse shares
 - OIDC and LDAP authentication
 - Integration with ClamAV for security scans
-- Different file providers: local storage and S3
+- Storage providers: local filesystem and S3
 
-## 🐧 Get to know Pingvin Share
+### New in Saka Share
 
-- [Demo](https://pingvin-share.dev.eliasschneider.com)
-- [Review by DB Tech](https://www.youtube.com/watch?v=rWwNeZCOPJA)
+- **Code Snippets** - Share syntax-highlighted code snippets alongside files, with auto language detection and support for 30+ languages
+- **Inline Code Editor** - VS Code-style editing experience with live syntax highlighting, line numbers, and tab support
+- **Redesigned UI** - Modernized interface with animated stacked row lists for shares, improved header with Upload CTA, and theme/language switcher
+- **Redesigned Navigation** - Upload button centered in header, avatar dropdown with quick links to My Shares and Reverse Shares
+- **Account Layout** - Account settings wrapped in a sidebar navigation layout
+- **Improved File Preview** - Enhanced file preview modal with better support for images, audio, video, SVG, and text files
+- **Cookie Security** - Hardened cookie security flags across auth, share, and OAuth flows
+- **30+ Languages** - Full i18n support with snippet-related translations across all locales
 
-<img src="https://user-images.githubusercontent.com/58886915/225038319-b2ef742c-3a74-4eb6-9689-4207a36842a4.png" width="700"/>
+## Setup
 
-## ⌨️ Setup
+### Docker Compose (recommended)
 
-### Installation with Docker (recommended)
-
-1. Download the `docker-compose.yml` file
+1. Clone this repository
 2. Run `docker compose up -d`
+3. Access the app at `http://localhost:3000`
 
-The website is now listening on `http://localhost:3000`, have fun with Pingvin Share 🐧!
+### Configuration
 
-> [!TIP]
-> Checkout [Pocket ID](https://github.com/stonith404/pocket-id), a user-friendly OIDC provider that lets you easily log in to services like Pingvin Share using Passkeys.
+Configuration can be done through the admin UI or via a `config.yaml` file. See [config.example.yaml](config.example.yaml) for all available options.
 
-## 📚 Documentation
+## Credits
 
-For more installation options and advanced configurations, please refer to the [documentation](https://stonith404.github.io/pingvin-share).
-
-## 🖤 Contribute
-
-We would love it if you want to help make Pingvin Share better! You can either [help to translate](https://stonith404.github.io/pingvin-share/help-out/translate) Pingvin Share or [contribute to the codebase](https://stonith404.github.io/pingvin-share/help-out/contribute).
+Forked from [Pingvin Share](https://github.com/stonith404/pingvin-share) by [stonith404](https://github.com/stonith404).

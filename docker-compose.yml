@@ -1,5 +1,5 @@
 services:
-  pingvin-share:
+  saka-share:
     build: .
     # image: stonith404/pingvin-share  # original upstream image
     restart: unless-stopped
@@ -10,4 +10,4 @@ services:
     volumes:
       - "./data:/opt/app/backend/data"
       - "./data/images:/opt/app/frontend/public/img"
-  #      - "./config.yaml:/opt/app/config.yaml" # Add this line, if you want to configure pingvin-share via config file and not via UI
+  #      - "./config.yaml:/opt/app/config.yaml" # Add this line, if you want to configure saka-share via config file and not via UI
