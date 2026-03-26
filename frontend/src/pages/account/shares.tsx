@@ -126,7 +126,14 @@ const MyShares = () => {
               className={cx(classes.row, {
                 [classes.rowDeleting]: deletingId === share.id,
               })}
-              sx={{ animationDelay: `${index * 50}ms` }}
+              sx={{ animationDelay: `${index * 50}ms`, cursor: "pointer" }}
+              onClick={() => {
+                showShareInformationsModal(
+                  modals,
+                  share,
+                  parseInt(config.get("share.maxSize")),
+                );
+              }}
             >
               {/* Left: name + id */}
               <Box style={{ flex: 1, minWidth: 0 }}>
@@ -182,7 +189,7 @@ const MyShares = () => {
               </Group>
 
               {/* Right: actions */}
-              <Group spacing={4} noWrap>
+              <Group spacing={4} noWrap onClick={(e) => e.stopPropagation()}>
                 <Link href={`/share/${share.id}/edit`}>
                   <ActionIcon color="orange" variant="light" size={25}>
                     <TbEdit />
