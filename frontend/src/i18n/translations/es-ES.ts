@@ -540,5 +540,23 @@ export default {
   "common.error.number-too-large": "Debe ser como máximo {max}",
   "common.error.exact-length": "Debe tener exactamente {length} caracteres",
   "common.error.invalid-number": "Debe ser un número",
-  "common.error.field-required": "Este campo es requerido"
+  "common.error.field-required": "Este campo es requerido",
+
+  // Paste
+  "upload.tab.files": "Archivos",
+  "upload.tab.paste": "Pegar",
+  "upload.paste.placeholder": "Pega tu texto o código aquí...",
+  "upload.paste.language": "Idioma",
+  "upload.paste.add-text": "Agregar texto / código",
+  "upload.snippet.label": "Snippet",
+  "upload.snippet.title-placeholder": "Título (ej. Nginx Config)",
+  "upload.paste.error.empty": "Por favor, introduce contenido para compartir",
+  "upload.paste.error.too-large": "El contenido pegado supera el tamaño máximo",
+  "share.paste.raw": "Sin formato",
+  "share.paste.copy": "Copiar",
+  "share.paste.copied": "Copiado al portapapeles",
+  "share.paste.line-numbers": "Números de línea",
+  "share.paste.word-wrap": "Ajuste de línea",
+  "admin.config.share.paste-max-size": "Tamaño máximo de texto",
+  "admin.config.share.paste-max-size.description": "Tamaño máximo del contenido pegado en bytes",
 };

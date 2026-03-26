@@ -95,7 +95,11 @@ model Share {
   security   ShareSecurity?
   recipients ShareRecipient[]
   files      File[]
+  snippets   Snippet[]
   storageProvider String @default("LOCAL")
+
+  type          String  @default("FILE")
+  pasteLanguage String?
 }
 
 model ReverseShare {
@@ -130,6 +134,19 @@ model File {
 
   name String
   size String
+
+  shareId String
+  share   Share  @relation(fields: [shareId], references: [id], onDelete: Cascade)
+}
+
+model Snippet {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+
+  title    String?
+  content  String
+  language String?
+  order    Int      @default(0)
 
   shareId String
   share   Share  @relation(fields: [shareId], references: [id], onDelete: Cascade)

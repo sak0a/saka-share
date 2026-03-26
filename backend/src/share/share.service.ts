@@ -8,6 +8,7 @@ import { JwtService, JwtSignOptions } from "@nestjs/jwt";
 import { Share, User } from "@prisma/client";
 import * as archiver from "archiver";
 import * as argon from "argon2";
+import * as crypto from "crypto";
 import * as fs from "fs";
 import * as moment from "moment";
 import { ClamScanService } from "src/clamscan/clamscan.service";
@@ -71,13 +72,26 @@ export class ShareService {
       expirationDate = parsedExpiration;
     }
 
+    const snippets = share.snippets || [];
+    const hasSnippets = snippets.length > 0;
+
+    // Determine share type
+    let shareType = share.type || "FILE";
+    if (hasSnippets && shareType === "FILE") {
+      shareType = "PASTE";
+    }
+
+    // Extract fields that shouldn't go into Prisma create
+    const { snippets: _snippets, type: _type, ...shareData } = share as any;
+
     fs.mkdirSync(`${SHARE_DIRECTORY}/${share.id}`, {
       recursive: true,
     });
 
     const shareTuple = await this.prisma.share.create({
       data: {
-        ...share,
+        ...shareData,
+        type: shareType,
         expiration: expirationDate,
         creator: { connect: user ? { id: user.id } : undefined },
         security: { create: share.security },
@@ -89,6 +103,29 @@ export class ShareService {
         storageProvider: this.configService.get("s3.enabled") ? "S3" : "LOCAL",
       },
     });
+
+    // Create snippet records
+    if (hasSnippets) {
+      for (let i = 0; i < snippets.length; i++) {
+        await this.prisma.snippet.create({
+          data: {
+            title: snippets[i].title,
+            content: snippets[i].content,
+            language: snippets[i].language,
+            order: snippets[i].order ?? i,
+            share: { connect: { id: shareTuple.id } },
+          },
+        });
+      }
+
+      // Auto-complete only PASTE-only shares (MIXED waits for file uploads)
+      if (shareType === "PASTE") {
+        await this.prisma.share.update({
+          where: { id: shareTuple.id },
+          data: { uploadLocked: true },
+        });
+      }
+    }
 
     if (reverseShare) {
       // Assign share to reverse share token
@@ -126,6 +163,68 @@ export class ShareService {
     await archive.finalize();
   }
 
+  async getSnippetContent(shareId: string, snippetId: string): Promise<string> {
+    const snippet = await this.prisma.snippet.findFirst({
+      where: { id: snippetId, shareId },
+    });
+    if (!snippet) throw new NotFoundException("Snippet not found");
+    return snippet.content;
+  }
+
+  async addSnippet(
+    shareId: string,
+    data: { title?: string; content: string; language?: string; order?: number },
+  ) {
+    const share = await this.prisma.share.findUnique({ where: { id: shareId } });
+    if (!share) throw new NotFoundException("Share not found");
+
+    const snippetCount = await this.prisma.snippet.count({ where: { shareId } });
+
+    const snippet = await this.prisma.snippet.create({
+      data: {
+        title: data.title,
+        content: data.content,
+        language: data.language,
+        order: data.order ?? snippetCount,
+        share: { connect: { id: shareId } },
+      },
+    });
+
+    // Update share type if needed
+    if (share.type === "FILE") {
+      await this.prisma.share.update({
+        where: { id: shareId },
+        data: { type: "MIXED" },
+      });
+    }
+
+    return snippet;
+  }
+
+  async removeSnippet(shareId: string, snippetId: string) {
+    const snippet = await this.prisma.snippet.findFirst({
+      where: { id: snippetId, shareId },
+    });
+    if (!snippet) throw new NotFoundException("Snippet not found");
+
+    await this.prisma.snippet.delete({ where: { id: snippetId } });
+
+    // Check if share still has snippets, update type
+    const remainingSnippets = await this.prisma.snippet.count({ where: { shareId } });
+    if (remainingSnippets === 0) {
+      const share = await this.prisma.share.findUnique({
+        where: { id: shareId },
+        include: { files: true },
+      });
+      if (share.type === "PASTE" || share.type === "MIXED") {
+        await this.prisma.share.update({
+          where: { id: shareId },
+          data: { type: share.files.length > 0 ? "FILE" : "FILE" },
+        });
+      }
+    }
+  }
+
   async complete(id: string, reverseShareToken?: string) {
     const share = await this.prisma.share.findUnique({
       where: { id },
@@ -136,6 +235,14 @@ export class ShareService {
         reverseShare: { include: { creator: true } },
       },
     });
+
+    // Paste shares are auto-completed during creation
+    if (share.type === "PASTE") {
+      return {
+        ...share,
+        notifyReverseShareCreator: undefined,
+      };
+    }
 
     if (await this.isShareCompleted(id))
       throw new BadRequestException("Share already completed");
@@ -255,6 +362,11 @@ export class ShareService {
         files: {
           orderBy: {
             name: "asc",
+          },
+        },
+        snippets: {
+          orderBy: {
+            order: "asc",
           },
         },
         creator: true,

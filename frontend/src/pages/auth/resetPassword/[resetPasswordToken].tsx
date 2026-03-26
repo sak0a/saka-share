@@ -54,7 +54,7 @@ const ResetPassword = () => {
         <FormattedMessage id="resetPassword.text.enterNewPassword" />
       </Text>
 
-      <Paper withBorder shadow="md" p={30} radius="md" mt="xl">
+      <Paper withBorder shadow="md" p={30} mt="xl">
         <form
           onSubmit={form.onSubmit((values) => {
             authService

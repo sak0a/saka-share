@@ -4,10 +4,12 @@ import { FileUploadResponse } from "../types/File.type";
 
 import {
   CreateShare,
+  CreateSnippet,
   MyReverseShare,
   MyShare,
   Share,
   ShareMetaData,
+  Snippet,
 } from "../types/share.type";
 import api from "./api.service";
 
@@ -137,6 +139,18 @@ const setReverseShare = async (reverseShareToken: string) => {
   return data;
 };
 
+const getSnippetRaw = async (shareId: string, snippetId: string): Promise<string> => {
+  return (await api.get(`shares/${shareId}/snippets/${snippetId}/raw`)).data;
+};
+
+const addSnippet = async (shareId: string, snippet: CreateSnippet): Promise<Snippet> => {
+  return (await api.post(`shares/${shareId}/snippets`, snippet)).data;
+};
+
+const removeSnippet = async (shareId: string, snippetId: string): Promise<void> => {
+  await api.delete(`shares/${shareId}/snippets/${snippetId}`);
+};
+
 const removeReverseShare = async (id: string) => {
   await api.delete(`/reverseShares/${id}`);
 };
@@ -160,5 +174,8 @@ export default {
   setReverseShare,
   createReverseShare,
   getMyReverseShares,
+  getSnippetRaw,
+  addSnippet,
+  removeSnippet,
   removeReverseShare,
 };

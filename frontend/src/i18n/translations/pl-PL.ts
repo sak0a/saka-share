@@ -540,5 +540,23 @@ export default {
   "common.error.number-too-large": "Musi wynosić co najwyżej {max}",
   "common.error.exact-length": "Musi mieć dokładnie {length} znaków",
   "common.error.invalid-number": "Musi być liczbą",
-  "common.error.field-required": "To pole jest wymagane"
+  "common.error.field-required": "To pole jest wymagane",
+
+  // Paste
+  "upload.tab.files": "Pliki",
+  "upload.tab.paste": "Wklej",
+  "upload.paste.placeholder": "Wklej tutaj swój tekst lub kod...",
+  "upload.paste.language": "Język",
+  "upload.paste.add-text": "Dodaj tekst / kod",
+  "upload.snippet.label": "Snippet",
+  "upload.snippet.title-placeholder": "Tytuł (np. Nginx Config)",
+  "upload.paste.error.empty": "Wprowadź treść do udostępnienia",
+  "upload.paste.error.too-large": "Wklejona treść przekracza maksymalny rozmiar",
+  "share.paste.raw": "Surowy tekst",
+  "share.paste.copy": "Kopiuj",
+  "share.paste.copied": "Skopiowano do schowka",
+  "share.paste.line-numbers": "Numery linii",
+  "share.paste.word-wrap": "Zawijanie wierszy",
+  "admin.config.share.paste-max-size": "Maksymalny rozmiar tekstu",
+  "admin.config.share.paste-max-size.description": "Maksymalny rozmiar wklejonej treści w bajtach",
 };

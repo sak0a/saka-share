@@ -540,5 +540,23 @@ export default {
   "common.error.number-too-large": "Måste vara som mest {max}",
   "common.error.exact-length": "Måste vara exakt {length} tecken långt",
   "common.error.invalid-number": "Måste vara ett tal",
-  "common.error.field-required": "Obligatoriskt fält"
+  "common.error.field-required": "Obligatoriskt fält",
+
+  // Paste
+  "upload.tab.files": "Filer",
+  "upload.tab.paste": "Klistra in",
+  "upload.paste.placeholder": "Klistra in din text eller kod här...",
+  "upload.paste.language": "Språk",
+  "upload.paste.add-text": "Lägg till text / kod",
+  "upload.snippet.label": "Snippet",
+  "upload.snippet.title-placeholder": "Title (e.g. Nginx Config)",
+  "upload.paste.error.empty": "Ange innehåll att dela",
+  "upload.paste.error.too-large": "Det inklistrade innehållet överskrider maxstorleken",
+  "share.paste.raw": "Rå text",
+  "share.paste.copy": "Kopiera",
+  "share.paste.copied": "Kopierat till urklipp",
+  "share.paste.line-numbers": "Radnummer",
+  "share.paste.word-wrap": "Radbrytning",
+  "admin.config.share.paste-max-size": "Max textstorlek",
+  "admin.config.share.paste-max-size.description": "Maximal storlek på inklistrat innehåll i byte",
 };

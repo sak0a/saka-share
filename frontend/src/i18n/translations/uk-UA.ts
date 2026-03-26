@@ -540,5 +540,23 @@ export default {
   "common.error.number-too-large": "Повинно бути не більше ніж {max}",
   "common.error.exact-length": "Повинно бути рівно {length} символів",
   "common.error.invalid-number": "Повинно бути числом",
-  "common.error.field-required": "Поле обов'язкове для заповнення"
+  "common.error.field-required": "Поле обов'язкове для заповнення",
+
+  // Paste
+  "upload.tab.files": "Файли",
+  "upload.tab.paste": "Вставка",
+  "upload.paste.placeholder": "Вставте текст або код тут...",
+  "upload.paste.language": "Мова",
+  "upload.paste.add-text": "Додати текст / код",
+  "upload.snippet.label": "Сніпет",
+  "upload.snippet.title-placeholder": "Заголовок (напр. Nginx Config)",
+  "upload.paste.error.empty": "Будь ласка, введіть вміст для поширення",
+  "upload.paste.error.too-large": "Вставлений вміст перевищує максимальний розмір",
+  "share.paste.raw": "Вихідний текст",
+  "share.paste.copy": "Копіювати",
+  "share.paste.copied": "Скопійовано до буфера обміну",
+  "share.paste.line-numbers": "Номери рядків",
+  "share.paste.word-wrap": "Перенесення рядків",
+  "admin.config.share.paste-max-size": "Макс. розмір тексту",
+  "admin.config.share.paste-max-size.description": "Максимальний розмір вставленого вмісту в байтах",
 };

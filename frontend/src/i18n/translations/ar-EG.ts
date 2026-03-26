@@ -540,5 +540,23 @@ export default {
   "common.error.number-too-large": "Must be at most {max}",
   "common.error.exact-length": "يجب أن يكون بالضبط {length} حرفًا",
   "common.error.invalid-number": "يجب أن يكون رقماً",
-  "common.error.field-required": "هذا الحقل مطلوب"
+  "common.error.field-required": "هذا الحقل مطلوب",
+
+  // Paste
+  "upload.tab.files": "ملفات",
+  "upload.tab.paste": "لصق",
+  "upload.paste.placeholder": "الصق النص أو الكود هنا...",
+  "upload.paste.language": "اللغة",
+  "upload.paste.add-text": "إضافة نص / كود",
+  "upload.snippet.label": "مقتطف",
+  "upload.snippet.title-placeholder": "العنوان (مثال: Nginx Config)",
+  "upload.paste.error.empty": "يرجى إدخال محتوى للمشاركة",
+  "upload.paste.error.too-large": "المحتوى الملصوق يتجاوز الحد الأقصى للحجم",
+  "share.paste.raw": "نص خام",
+  "share.paste.copy": "نسخ",
+  "share.paste.copied": "تم النسخ إلى الحافظة",
+  "share.paste.line-numbers": "أرقام الأسطر",
+  "share.paste.word-wrap": "التفاف النص",
+  "admin.config.share.paste-max-size": "الحد الأقصى لحجم النص",
+  "admin.config.share.paste-max-size.description": "الحد الأقصى لحجم المحتوى الملصوق بالبايت",
 };

@@ -540,5 +540,23 @@ export default {
   "common.error.number-too-large": "Musí být nejvýše {max}",
   "common.error.exact-length": "Musí mít přesně {length} znaků",
   "common.error.invalid-number": "Musí být číslo",
-  "common.error.field-required": "Toto pole je povinné"
+  "common.error.field-required": "Toto pole je povinné",
+
+  // Paste
+  "upload.tab.files": "Soubory",
+  "upload.tab.paste": "Vložit",
+  "upload.paste.placeholder": "Vložte sem svůj text nebo kód...",
+  "upload.paste.language": "Jazyk",
+  "upload.paste.add-text": "Přidat text / kód",
+  "upload.snippet.label": "Snippet",
+  "upload.snippet.title-placeholder": "Title (e.g. Nginx Config)",
+  "upload.paste.error.empty": "Zadejte obsah ke sdílení",
+  "upload.paste.error.too-large": "Vložený obsah překračuje maximální velikost",
+  "share.paste.raw": "Surový text",
+  "share.paste.copy": "Kopírovat",
+  "share.paste.copied": "Zkopírováno do schránky",
+  "share.paste.line-numbers": "Čísla řádků",
+  "share.paste.word-wrap": "Zalamování řádků",
+  "admin.config.share.paste-max-size": "Maximální velikost textu",
+  "admin.config.share.paste-max-size.description": "Maximální velikost vloženého obsahu v bajtech",
 };

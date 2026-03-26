@@ -540,5 +540,23 @@ export default {
   "common.error.number-too-large": "Должно быть не больше {max}",
   "common.error.exact-length": "Должно быть ровно {length} символов",
   "common.error.invalid-number": "Должно быть числом",
-  "common.error.field-required": "Поле обязательно для заполнения"
+  "common.error.field-required": "Поле обязательно для заполнения",
+
+  // Paste
+  "upload.tab.files": "Файлы",
+  "upload.tab.paste": "Вставка",
+  "upload.paste.placeholder": "Вставьте текст или код сюда...",
+  "upload.paste.language": "Язык",
+  "upload.paste.add-text": "Добавить текст / код",
+  "upload.snippet.label": "Сниппет",
+  "upload.snippet.title-placeholder": "Заголовок (напр. Nginx Config)",
+  "upload.paste.error.empty": "Пожалуйста, введите содержимое для публикации",
+  "upload.paste.error.too-large": "Вставленное содержимое превышает максимальный размер",
+  "share.paste.raw": "Исходный текст",
+  "share.paste.copy": "Копировать",
+  "share.paste.copied": "Скопировано в буфер обмена",
+  "share.paste.line-numbers": "Номера строк",
+  "share.paste.word-wrap": "Перенос строк",
+  "admin.config.share.paste-max-size": "Макс. размер текста",
+  "admin.config.share.paste-max-size.description": "Максимальный размер вставленного содержимого в байтах",
 };

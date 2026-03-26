@@ -1,13 +1,24 @@
-import { Button, Group } from "@mantine/core";
+import {
+  Button,
+  Card,
+  Group,
+  Stack,
+  Text,
+  UnstyledButton,
+} from "@mantine/core";
 import { useModals } from "@mantine/modals";
 import { cleanNotifications } from "@mantine/notifications";
 import { AxiosError } from "axios";
 import pLimit from "p-limit";
 import { useEffect, useRef, useState } from "react";
+import { TbCode, TbPlus, TbX } from "react-icons/tb";
 import { FormattedMessage } from "react-intl";
 import Meta from "../../components/Meta";
 import Dropzone from "../../components/upload/Dropzone";
 import FileList from "../../components/upload/FileList";
+import SnippetEditor, {
+  SnippetDraft,
+} from "../../components/upload/PasteEditor";
 import showCompletedUploadModal from "../../components/upload/modals/showCompletedUploadModal";
 import showCreateUploadModal from "../../components/upload/modals/showCreateUploadModal";
 import useConfig from "../../hooks/config.hook";
@@ -42,30 +53,94 @@ const Upload = ({
   const [files, setFiles] = useState<FileUpload[]>([]);
   const [isUploading, setisUploading] = useState(false);
 
+  // Snippets state
+  const [snippets, setSnippets] = useState<SnippetDraft[]>([]);
+
   useConfirmLeave({
     message: t("upload.notify.confirm-leave"),
     enabled: isUploading,
   });
 
   const chunkSize = useRef(parseInt(config.get("share.chunkSize")));
+  const maxPasteSize = parseInt(config.get("share.pasteMaxSize") || "1048576");
 
   maxShareSize ??= parseInt(config.get("share.maxSize"));
   const autoOpenCreateUploadModal = config.get("share.autoOpenShareModal");
 
-  const uploadFiles = async (share: CreateShare, files: FileUpload[]) => {
+  const hasSnippets = snippets.some((s) => s.content.trim().length > 0);
+  const hasFiles = files.length > 0;
+  const canShare = hasSnippets || hasFiles;
+
+  const addSnippet = () => {
+    setSnippets((prev) => [
+      ...prev,
+      { title: "", content: "", language: "" },
+    ]);
+  };
+
+  const updateSnippet = (index: number, snippet: SnippetDraft) => {
+    setSnippets((prev) => prev.map((s, i) => (i === index ? snippet : s)));
+  };
+
+  const removeSnippet = (index: number) => {
+    setSnippets((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const getShareType = (): "FILE" | "PASTE" | "MIXED" => {
+    if (hasSnippets && hasFiles) return "MIXED";
+    if (hasSnippets) return "PASTE";
+    return "FILE";
+  };
+
+  const uploadFiles = async (share: CreateShare, filesToUpload: FileUpload[]) => {
+    const shareType = getShareType();
+    const validSnippets = snippets
+      .filter((s) => s.content.trim().length > 0)
+      .map((s, i) => ({
+        title: s.title || undefined,
+        content: s.content,
+        language: s.language || undefined,
+        order: i,
+      }));
+
+    const shareWithSnippets: CreateShare = {
+      ...share,
+      type: shareType,
+      snippets: validSnippets.length > 0 ? validSnippets : undefined,
+    };
+
+    // Paste-only: create and we're done (auto-completed on backend)
+    if (shareType === "PASTE") {
+      try {
+        setisUploading(true);
+        const isReverse = router.pathname != "/upload";
+        const created = await shareService.create(shareWithSnippets, isReverse);
+        showCompletedUploadModal(modals, {
+          ...created,
+          notifyReverseShareCreator: undefined,
+        });
+        setSnippets([]);
+      } catch (e) {
+        toast.axiosError(e);
+      } finally {
+        setisUploading(false);
+      }
+      return;
+    }
+
+    // FILE or MIXED: create share, upload files, then complete
     setisUploading(true);
 
     try {
-      const isReverseShare = router.pathname != "/upload";
-      createdShare = await shareService.create(share, isReverseShare);
+      const isReverse = router.pathname != "/upload";
+      createdShare = await shareService.create(shareWithSnippets, isReverse);
     } catch (e) {
       toast.axiosError(e);
       setisUploading(false);
       return;
     }
 
-    const fileUploadPromises = files.map(async (file, fileIndex) =>
-      // Limit the number of concurrent uploads to 3
+    const fileUploadPromises = filesToUpload.map(async (file, fileIndex) =>
       promiseLimit(async () => {
         let fileId;
 
@@ -83,8 +158,6 @@ const Upload = ({
         setFileProgress(1);
 
         let chunks = Math.ceil(file.size / chunkSize.current);
-
-        // If the file is 0 bytes, we still need to upload 1 chunk
         if (chunks == 0) chunks++;
 
         for (let chunkIndex = 0; chunkIndex < chunks; chunkIndex++) {
@@ -93,16 +166,7 @@ const Upload = ({
           const blob = file.slice(from, to);
           try {
             await shareService
-              .uploadFile(
-                createdShare.id,
-                blob,
-                {
-                  id: fileId,
-                  name: file.name,
-                },
-                chunkIndex,
-                chunks,
-              )
+              .uploadFile(createdShare.id, blob, { id: fileId, name: file.name }, chunkIndex, chunks)
               .then((response) => {
                 fileId = response.id;
               });
@@ -113,15 +177,12 @@ const Upload = ({
               e instanceof AxiosError &&
               e.response?.data.error == "unexpected_chunk_index"
             ) {
-              // Retry with the expected chunk index
               chunkIndex = e.response!.data!.expectedChunkIndex - 1;
               continue;
             } else {
               setFileProgress(-1);
-              // Retry after 5 seconds
               await new Promise((resolve) => setTimeout(resolve, 5000));
               chunkIndex = -1;
-
               continue;
             }
           }
@@ -132,15 +193,21 @@ const Upload = ({
     Promise.all(fileUploadPromises);
   };
 
-  const showCreateUploadModalCallback = (files: FileUpload[]) => {
+  const showCreateUploadModalCallback = () => {
+    // Validate snippet sizes
+    for (const snippet of snippets) {
+      if (new TextEncoder().encode(snippet.content).length > maxPasteSize) {
+        toast.error(t("upload.paste.error.too-large"));
+        return;
+      }
+    }
+
     showCreateUploadModal(
       modals,
       {
-        isUserSignedIn: user ? true : false,
+        isUserSignedIn: !!user,
         isReverseShare,
-        allowUnauthenticatedShares: config.get(
-          "share.allowUnauthenticatedShares",
-        ),
+        allowUnauthenticatedShares: config.get("share.allowUnauthenticatedShares"),
         enableEmailRecepients: config.get("email.enableShareEmailRecipients"),
         maxExpiration: config.get("share.maxExpiration"),
         shareIdLength: config.get("share.shareIdLength"),
@@ -154,14 +221,13 @@ const Upload = ({
   const handleDropzoneFilesChanged = (files: FileUpload[]) => {
     if (autoOpenCreateUploadModal) {
       setFiles(files);
-      showCreateUploadModalCallback(files);
+      showCreateUploadModalCallback();
     } else {
       setFiles((oldArr) => [...oldArr, ...files]);
     }
   };
 
   useEffect(() => {
-    // Check if there are any files that failed to upload
     const fileErrorCount = files.filter(
       (file) => file.uploadingProgress == -1,
     ).length;
@@ -170,10 +236,7 @@ const Upload = ({
       if (!errorToastShown) {
         toast.error(
           t("upload.notify.count-failed", { count: fileErrorCount }),
-          {
-            withCloseButton: false,
-            autoClose: false,
-          },
+          { withCloseButton: false, autoClose: false },
         );
       }
       errorToastShown = true;
@@ -182,7 +245,6 @@ const Upload = ({
       errorToastShown = false;
     }
 
-    // Complete share
     if (
       files.length > 0 &&
       files.every((file) => file.uploadingProgress >= 100) &&
@@ -194,6 +256,7 @@ const Upload = ({
           setisUploading(false);
           showCompletedUploadModal(modals, share);
           setFiles([]);
+          setSnippets([]);
         })
         .catch(() => toast.error(t("upload.notify.generic-error")));
     }
@@ -202,28 +265,87 @@ const Upload = ({
   return (
     <>
       <Meta title={t("upload.title")} />
+
       <Group position="right" mb={20}>
         <Button
           loading={isUploading}
-          disabled={files.length <= 0}
-          onClick={() => showCreateUploadModalCallback(files)}
+          disabled={!canShare}
+          onClick={showCreateUploadModalCallback}
         >
           <FormattedMessage id="common.button.share" />
         </Button>
       </Group>
-      <Dropzone
-        title={
-          !autoOpenCreateUploadModal && files.length > 0
-            ? t("share.edit.append-upload")
-            : undefined
-        }
-        maxShareSize={maxShareSize}
-        onFilesChanged={handleDropzoneFilesChanged}
-        isUploading={isUploading}
-      />
-      {files.length > 0 && (
-        <FileList<FileUpload> files={files} setFiles={setFiles} />
-      )}
+
+      <Stack spacing="md">
+        <Dropzone
+          title={
+            !autoOpenCreateUploadModal && files.length > 0
+              ? t("share.edit.append-upload")
+              : undefined
+          }
+          maxShareSize={maxShareSize}
+          onFilesChanged={handleDropzoneFilesChanged}
+          isUploading={isUploading}
+        />
+
+        {files.length > 0 && (
+          <FileList<FileUpload> files={files} setFiles={setFiles} />
+        )}
+
+        {/* Snippet editors */}
+        {!isReverseShare && (
+          <>
+            {snippets.map((snippet, index) => (
+              <Card
+                key={index}
+                withBorder
+                p="sm"
+              >
+                <Group position="apart" mb="xs">
+                  <Group spacing={6}>
+                    <TbCode size={16} />
+                    <Text size="sm" weight={500}>
+                      {snippet.title || `${t("upload.snippet.label")} ${index + 1}`}
+                    </Text>
+                  </Group>
+                  <UnstyledButton onClick={() => removeSnippet(index)}>
+                    <TbX size={16} />
+                  </UnstyledButton>
+                </Group>
+                <SnippetEditor
+                  snippet={snippet}
+                  onChange={(s) => updateSnippet(index, s)}
+                  maxSize={maxPasteSize}
+                />
+              </Card>
+            ))}
+
+            <UnstyledButton
+              onClick={addSnippet}
+              sx={(theme) => ({
+                padding: "12px 16px",
+                border: `1px dashed ${
+                  theme.colorScheme === "dark"
+                    ? theme.colors.dark[4]
+                    : theme.colors.gray[4]
+                }`,
+                "&:hover": {
+                  backgroundColor:
+                    theme.colorScheme === "dark"
+                      ? theme.colors.dark[5]
+                      : theme.colors.gray[0],
+                },
+              })}
+            >
+              <Group spacing={8}>
+                <TbPlus size={16} />
+                <TbCode size={16} />
+                <Text size="sm">{t("upload.paste.add-text")}</Text>
+              </Group>
+            </UnstyledButton>
+          </>
+        )}
+      </Stack>
     </>
   );
 };

@@ -540,5 +540,23 @@ export default {
   "common.error.number-too-large": "Must be at most {max}",
   "common.error.exact-length": "Moet precies {length} tekens bevatten",
   "common.error.invalid-number": "Moet een getal zijn",
-  "common.error.field-required": "Dit veld is verplicht"
+  "common.error.field-required": "Dit veld is verplicht",
+
+  // Paste
+  "upload.tab.files": "Bestanden",
+  "upload.tab.paste": "Plakken",
+  "upload.paste.placeholder": "Plak je tekst of code hier...",
+  "upload.paste.language": "Taal",
+  "upload.paste.add-text": "Tekst / code toevoegen",
+  "upload.snippet.label": "Snippet",
+  "upload.snippet.title-placeholder": "Title (e.g. Nginx Config)",
+  "upload.paste.error.empty": "Voer inhoud in om te delen",
+  "upload.paste.error.too-large": "De geplakte inhoud overschrijdt de maximale grootte",
+  "share.paste.raw": "Onbewerkt",
+  "share.paste.copy": "Kopiëren",
+  "share.paste.copied": "Gekopieerd naar klembord",
+  "share.paste.line-numbers": "Regelnummers",
+  "share.paste.word-wrap": "Regelafbreking",
+  "admin.config.share.paste-max-size": "Maximale tekstgrootte",
+  "admin.config.share.paste-max-size.description": "Maximale grootte van de geplakte inhoud in bytes",
 };

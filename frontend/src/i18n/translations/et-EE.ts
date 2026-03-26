@@ -540,5 +540,23 @@ export default {
   "common.error.number-too-large": "Peab olema maksimaalselt {max}",
   "common.error.exact-length": "Peab olema täpselt {length} tähemärki",
   "common.error.invalid-number": "Peab olema number",
-  "common.error.field-required": "See väli on kohustuslik"
+  "common.error.field-required": "See väli on kohustuslik",
+
+  // Paste
+  "upload.tab.files": "Files",
+  "upload.tab.paste": "Paste",
+  "upload.paste.placeholder": "Paste your text or code here...",
+  "upload.paste.language": "Language",
+  "upload.paste.add-text": "Add text / code",
+  "upload.snippet.label": "Snippet",
+  "upload.snippet.title-placeholder": "Title (e.g. Nginx Config)",
+  "upload.paste.error.empty": "Please enter some content to share",
+  "upload.paste.error.too-large": "Paste content exceeds maximum size",
+  "share.paste.raw": "Raw",
+  "share.paste.copy": "Copy",
+  "share.paste.copied": "Copied to clipboard",
+  "share.paste.line-numbers": "Line numbers",
+  "share.paste.word-wrap": "Word wrap",
+  "admin.config.share.paste-max-size": "Max paste size",
+  "admin.config.share.paste-max-size.description": "Maximum size of paste content in bytes",
 };

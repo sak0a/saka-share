@@ -540,5 +540,23 @@ export default {
   "common.error.number-too-large": "Doit être au plus {max}",
   "common.error.exact-length": "Doit comporter exactement {length} caractères",
   "common.error.invalid-number": "Doit être un nombre",
-  "common.error.field-required": "Ce champ est obligatoire"
+  "common.error.field-required": "Ce champ est obligatoire",
+
+  // Paste
+  "upload.tab.files": "Fichiers",
+  "upload.tab.paste": "Coller",
+  "upload.paste.placeholder": "Collez votre texte ou code ici...",
+  "upload.paste.language": "Langage",
+  "upload.paste.add-text": "Ajouter du texte / code",
+  "upload.snippet.label": "Snippet",
+  "upload.snippet.title-placeholder": "Titre (ex. Nginx Config)",
+  "upload.paste.error.empty": "Veuillez entrer du contenu à partager",
+  "upload.paste.error.too-large": "Le contenu collé dépasse la taille maximale",
+  "share.paste.raw": "Brut",
+  "share.paste.copy": "Copier",
+  "share.paste.copied": "Copié dans le presse-papiers",
+  "share.paste.line-numbers": "Numéros de ligne",
+  "share.paste.word-wrap": "Retour à la ligne",
+  "admin.config.share.paste-max-size": "Taille max du texte",
+  "admin.config.share.paste-max-size.description": "Taille maximale du contenu collé en octets",
 };

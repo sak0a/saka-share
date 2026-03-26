@@ -1,6 +1,7 @@
 import { Expose, plainToClass, Type } from "class-transformer";
 import { FileDTO } from "src/file/dto/file.dto";
 import { PublicUserDTO } from "src/user/dto/publicUser.dto";
+import { SnippetDTO } from "./snippet.dto";
 
 export class ShareDTO {
   @Expose()
@@ -28,6 +29,16 @@ export class ShareDTO {
 
   @Expose()
   size: number;
+
+  @Expose()
+  type: string;
+
+  @Expose()
+  pasteLanguage?: string;
+
+  @Expose()
+  @Type(() => SnippetDTO)
+  snippets?: SnippetDTO[];
 
   from(partial: Partial<ShareDTO>) {
     return plainToClass(ShareDTO, partial, { excludeExtraneousValues: true });

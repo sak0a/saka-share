@@ -73,7 +73,7 @@ const Dropzone = ({
           }
         }}
         className={classes.dropzone}
-        radius="md"
+       
       >
         <div style={{ pointerEvents: "none" }}>
           <Group position="center">
@@ -95,7 +95,7 @@ const Dropzone = ({
           className={classes.control}
           variant="light"
           size="sm"
-          radius="xl"
+         
           disabled={isUploading}
           onClick={() => openRef.current && openRef.current()}
         >

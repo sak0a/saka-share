@@ -1,6 +1,8 @@
 import { Type } from "class-transformer";
 import {
+  IsArray,
   IsEmail,
+  IsIn,
   IsOptional,
   IsString,
   Length,
@@ -9,6 +11,7 @@ import {
   ValidateNested,
 } from "class-validator";
 import { ShareSecurityDTO } from "./shareSecurity.dto";
+import { CreateSnippetDTO } from "./snippet.dto";
 
 export class CreateShareDTO {
   @IsString()
@@ -35,4 +38,14 @@ export class CreateShareDTO {
   @ValidateNested()
   @Type(() => ShareSecurityDTO)
   security: ShareSecurityDTO;
+
+  @IsOptional()
+  @IsIn(["FILE", "PASTE", "MIXED"])
+  type?: string;
+
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateSnippetDTO)
+  snippets?: CreateSnippetDTO[];
 }

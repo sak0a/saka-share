@@ -123,7 +123,7 @@ export default function Home() {
               spacing="sm"
               size="sm"
               icon={
-                <ThemeIcon size={20} radius="xl">
+                <ThemeIcon size={20}>
                   <TbCheck size={12} />
                 </ThemeIcon>
               }
@@ -158,7 +158,7 @@ export default function Home() {
               <Button
                 component={Link}
                 href={getButtonHref()}
-                radius="xl"
+               
                 size="md"
                 className={classes.control}
               >
@@ -169,7 +169,7 @@ export default function Home() {
                 href="https://github.com/stonith404/pingvin-share"
                 target="_blank"
                 variant="default"
-                radius="xl"
+               
                 size="md"
                 className={classes.control}
               >

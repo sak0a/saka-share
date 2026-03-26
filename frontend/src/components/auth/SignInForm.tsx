@@ -159,7 +159,7 @@ const SignInForm = ({ redirectPath }: { redirectPath: string }) => {
           </Anchor>
         </Text>
       )}
-      <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+      <Paper withBorder shadow="md" p={30} mt={30}>
         {config.get("oauth.disablePassword") || (
           <form
             onSubmit={form.onSubmit((values) => {

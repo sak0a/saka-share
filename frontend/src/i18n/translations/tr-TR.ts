@@ -540,5 +540,23 @@ export default {
   "common.error.number-too-large": "En fazla {max} olabilir",
   "common.error.exact-length": "Tam olarak {length} karakter olmalıdır",
   "common.error.invalid-number": "Bir sayı olmalıdır",
-  "common.error.field-required": "Bu alan zorunludur"
+  "common.error.field-required": "Bu alan zorunludur",
+
+  // Paste
+  "upload.tab.files": "Dosyalar",
+  "upload.tab.paste": "Yapıştır",
+  "upload.paste.placeholder": "Metin veya kodunuzu buraya yapıştırın...",
+  "upload.paste.language": "Dil",
+  "upload.paste.add-text": "Metin / kod ekle",
+  "upload.snippet.label": "Snippet",
+  "upload.snippet.title-placeholder": "Başlık (ör. Nginx Config)",
+  "upload.paste.error.empty": "Paylaşmak için lütfen içerik girin",
+  "upload.paste.error.too-large": "Yapıştırılan içerik maksimum boyutu aşıyor",
+  "share.paste.raw": "Ham metin",
+  "share.paste.copy": "Kopyala",
+  "share.paste.copied": "Panoya kopyalandı",
+  "share.paste.line-numbers": "Satır numaraları",
+  "share.paste.word-wrap": "Sözcük kaydırma",
+  "admin.config.share.paste-max-size": "Maksimum metin boyutu",
+  "admin.config.share.paste-max-size.description": "Yapıştırılan içeriğin maksimum bayt boyutu",
 };

@@ -75,6 +75,11 @@ export const configVariables = {
       defaultValue: "false",
       secret: false,
     },
+    pasteMaxSize: {
+      type: "filesize",
+      defaultValue: "1048576",
+      secret: false,
+    },
   },
   cache: {
     "redis-enabled": {

@@ -1,5 +1,7 @@
 import {
+  Box,
   Button,
+  Card,
   Center,
   Stack,
   Text,
@@ -7,6 +9,7 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
+import DOMPurify from "dompurify";
 import Markdown, { MarkdownToJSX } from "markdown-to-jsx";
 import Link from "next/link";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
@@ -16,11 +19,13 @@ import api from "../../services/api.service";
 const FilePreviewContext = React.createContext<{
   shareId: string;
   fileId: string;
+  fileName: string;
   mimeType: string;
   setIsNotSupported: Dispatch<SetStateAction<boolean>>;
 }>({
   shareId: "",
   fileId: "",
+  fileName: "",
   mimeType: "",
   setIsNotSupported: () => {},
 });
@@ -29,10 +34,12 @@ const FilePreview = ({
   shareId,
   fileId,
   mimeType,
+  fileName,
 }: {
   shareId: string;
   fileId: string;
   mimeType: string;
+  fileName?: string;
 }) => {
   const [isNotSupported, setIsNotSupported] = useState(false);
   if (isNotSupported) return <UnSupportedFile />;
@@ -40,7 +47,7 @@ const FilePreview = ({
   return (
     <Stack>
       <FilePreviewContext.Provider
-        value={{ shareId, fileId, mimeType, setIsNotSupported }}
+        value={{ shareId, fileId, fileName: fileName || "", mimeType, setIsNotSupported }}
       >
         <FileDecider />
       </FilePreviewContext.Provider>
@@ -52,7 +59,6 @@ const FilePreview = ({
         href={`/api/shares/${shareId}/files/${fileId}?download=false`}
       >
         View original file
-        {/* Add translation? */}
       </Button>
     </Stack>
   );
@@ -65,6 +71,8 @@ const FileDecider = () => {
     return <PdfPreview />;
   } else if (mimeType.startsWith("video/")) {
     return <VideoPreview />;
+  } else if (mimeType === "image/svg+xml") {
+    return <SvgPreview />;
   } else if (mimeType.startsWith("image/")) {
     return <ImagePreview />;
   } else if (mimeType.startsWith("audio/")) {
@@ -78,18 +86,25 @@ const FileDecider = () => {
 };
 
 const AudioPreview = () => {
-  const { shareId, fileId, setIsNotSupported } =
+  const { shareId, fileId, fileName, setIsNotSupported } =
     React.useContext(FilePreviewContext);
   return (
     <Center style={{ minHeight: 200 }}>
-      <Stack align="center" spacing={10} style={{ width: "100%" }}>
-        <audio controls style={{ width: "100%" }}>
-          <source
-            src={`/api/shares/${shareId}/files/${fileId}?download=false`}
-            onError={() => setIsNotSupported(true)}
-          />
-        </audio>
-      </Stack>
+      <Card withBorder style={{ width: "100%" }} p="md">
+        <Stack align="center" spacing={10} style={{ width: "100%" }}>
+          {fileName && (
+            <Text size="sm" weight={500} truncate style={{ maxWidth: "100%" }}>
+              {fileName}
+            </Text>
+          )}
+          <audio controls style={{ width: "100%" }}>
+            <source
+              src={`/api/shares/${shareId}/files/${fileId}?download=false`}
+              onError={() => setIsNotSupported(true)}
+            />
+          </audio>
+        </Stack>
+      </Card>
     </Center>
   );
 };
@@ -98,7 +113,12 @@ const VideoPreview = () => {
   const { shareId, fileId, setIsNotSupported } =
     React.useContext(FilePreviewContext);
   return (
-    <video width="100%" controls>
+    <video
+      width="100%"
+      controls
+      playsInline
+      controlsList="nodownload"
+    >
       <source
         src={`/api/shares/${shareId}/files/${fileId}?download=false`}
         onError={() => setIsNotSupported(true)}
@@ -107,17 +127,67 @@ const VideoPreview = () => {
   );
 };
 
+const SvgPreview = () => {
+  const { shareId, fileId, setIsNotSupported } =
+    React.useContext(FilePreviewContext);
+  const [svgContent, setSvgContent] = useState<string>("");
+
+  useEffect(() => {
+    api
+      .get(`/shares/${shareId}/files/${fileId}?download=false`)
+      .then((res) => {
+        const sanitized = DOMPurify.sanitize(res.data, {
+          USE_PROFILES: { svg: true, svgFilters: true },
+        });
+        setSvgContent(sanitized);
+      })
+      .catch(() => setIsNotSupported(true));
+  }, [shareId, fileId]);
+
+  if (!svgContent) return null;
+
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        "& svg": {
+          maxWidth: "100%",
+          height: "auto",
+        },
+      }}
+      dangerouslySetInnerHTML={{ __html: svgContent }}
+    />
+  );
+};
+
 const ImagePreview = () => {
   const { shareId, fileId, setIsNotSupported } =
     React.useContext(FilePreviewContext);
+  const [zoomed, setZoomed] = useState(false);
+
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={`/api/shares/${shareId}/files/${fileId}?download=false`}
-      alt={`${fileId}_preview`}
-      width="100%"
-      onError={() => setIsNotSupported(true)}
-    />
+    <Box
+      onClick={() => setZoomed(!zoomed)}
+      sx={{
+        cursor: zoomed ? "zoom-out" : "zoom-in",
+        overflow: zoomed ? "auto" : "hidden",
+        maxHeight: zoomed ? "80vh" : undefined,
+      }}
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={`/api/shares/${shareId}/files/${fileId}?download=false`}
+        alt={`${fileId}_preview`}
+        style={{
+          width: zoomed ? "auto" : "100%",
+          maxWidth: zoomed ? "none" : "100%",
+          transition: "all 0.2s ease",
+        }}
+        onError={() => setIsNotSupported(true)}
+      />
+    </Box>
   );
 };
 
@@ -140,8 +210,8 @@ const TextPreview = () => {
           style: {
             backgroundColor:
               colorScheme == "dark"
-                ? "rgba(50, 50, 50, 0.5)"
-                : "rgba(220, 220, 220, 0.5)",
+                ? "rgba(30, 30, 30, 0.8)"
+                : "rgba(240, 240, 240, 0.8)",
             padding: "0.75em",
             whiteSpace: "pre-wrap",
           },

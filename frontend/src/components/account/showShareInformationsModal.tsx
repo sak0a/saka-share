@@ -86,7 +86,7 @@ const showShareInformationsModal = (
             label={share.size / maxShareSize >= 0.1 ? formattedShareSize : ""}
             style={{ width: share.size / maxShareSize < 0.1 ? "70%" : "80%" }}
             size="xl"
-            radius="xl"
+           
           />
           <Text size="xs" style={{ marginLeft: "4px" }}>
             {formattedMaxShareSize}

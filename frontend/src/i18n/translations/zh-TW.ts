@@ -540,5 +540,23 @@ export default {
   "common.error.number-too-large": "必須小於 {max}",
   "common.error.exact-length": "必須為 {length} 個字元",
   "common.error.invalid-number": "必須為數字",
-  "common.error.field-required": "必填"
+  "common.error.field-required": "必填",
+
+  // Paste
+  "upload.tab.files": "檔案",
+  "upload.tab.paste": "貼上",
+  "upload.paste.placeholder": "在此貼上您的文字或程式碼...",
+  "upload.paste.language": "語言",
+  "upload.paste.add-text": "新增文字 / 程式碼",
+  "upload.snippet.label": "程式碼片段",
+  "upload.snippet.title-placeholder": "標題 (例如 Nginx Config)",
+  "upload.paste.error.empty": "請輸入要分享的內容",
+  "upload.paste.error.too-large": "貼上的內容超過最大大小限制",
+  "share.paste.raw": "原始文字",
+  "share.paste.copy": "複製",
+  "share.paste.copied": "已複製到剪貼簿",
+  "share.paste.line-numbers": "行號",
+  "share.paste.word-wrap": "自動換行",
+  "admin.config.share.paste-max-size": "最大貼上大小",
+  "admin.config.share.paste-max-size.description": "貼上內容的最大位元組數",
 };

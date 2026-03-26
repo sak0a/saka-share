@@ -540,5 +540,23 @@ export default {
   "common.error.number-too-large": "Must be at most {max}",
   "common.error.exact-length": "ต้องมีความยาว {length} ตัวอักษร",
   "common.error.invalid-number": "ต้องเป็นตัวเลข",
-  "common.error.field-required": "ต้องกรอกข้อมูลนี้"
+  "common.error.field-required": "ต้องกรอกข้อมูลนี้",
+
+  // Paste
+  "upload.tab.files": "ไฟล์",
+  "upload.tab.paste": "วาง",
+  "upload.paste.placeholder": "วางข้อความหรือโค้ดของคุณที่นี่...",
+  "upload.paste.language": "ภาษา",
+  "upload.paste.add-text": "เพิ่มข้อความ / โค้ด",
+  "upload.snippet.label": "สนิปเพ็ต",
+  "upload.snippet.title-placeholder": "ชื่อ (เช่น Nginx Config)",
+  "upload.paste.error.empty": "กรุณาใส่เนื้อหาที่ต้องการแชร์",
+  "upload.paste.error.too-large": "เนื้อหาที่วางเกินขนาดสูงสุด",
+  "share.paste.raw": "ข้อความดิบ",
+  "share.paste.copy": "คัดลอก",
+  "share.paste.copied": "คัดลอกไปยังคลิปบอร์ดแล้ว",
+  "share.paste.line-numbers": "หมายเลขบรรทัด",
+  "share.paste.word-wrap": "ตัดคำ",
+  "admin.config.share.paste-max-size": "ขนาดข้อความสูงสุด",
+  "admin.config.share.paste-max-size.description": "ขนาดสูงสุดของเนื้อหาที่วางในหน่วยไบต์",
 };

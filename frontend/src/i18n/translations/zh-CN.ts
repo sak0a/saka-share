@@ -540,5 +540,23 @@ export default {
   "common.error.number-too-large": "必须至多为 {max}",
   "common.error.exact-length": "必须为 {length} 个字符",
   "common.error.invalid-number": "必须为数字",
-  "common.error.field-required": "必填项"
+  "common.error.field-required": "必填项",
+
+  // Paste
+  "upload.tab.files": "文件",
+  "upload.tab.paste": "粘贴",
+  "upload.paste.placeholder": "在此粘贴您的文本或代码...",
+  "upload.paste.language": "语言",
+  "upload.paste.add-text": "添加文本 / 代码",
+  "upload.snippet.label": "代码片段",
+  "upload.snippet.title-placeholder": "标题 (例如 Nginx Config)",
+  "upload.paste.error.empty": "请输入要分享的内容",
+  "upload.paste.error.too-large": "粘贴内容超过最大大小限制",
+  "share.paste.raw": "原始文本",
+  "share.paste.copy": "复制",
+  "share.paste.copied": "已复制到剪贴板",
+  "share.paste.line-numbers": "行号",
+  "share.paste.word-wrap": "自动换行",
+  "admin.config.share.paste-max-size": "最大粘贴大小",
+  "admin.config.share.paste-max-size.description": "粘贴内容的最大字节数",
 };

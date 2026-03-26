@@ -2,6 +2,10 @@
   "permissions": {
     "additionalDirectories": [
       "/Users/laurinfrank/Library/CloudStorage/Dropbox/Code/Web/saka-share/docs/superpowers"
+    ],
+    "allow": [
+      "Bash(npx next:*)",
+      "Bash(*)"
     ]
   }
 }

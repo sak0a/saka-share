@@ -540,5 +540,23 @@ export default {
   "common.error.number-too-large": "最大で{max} である必要があります",
   "common.error.exact-length": "{length} 文字である必要があります",
   "common.error.invalid-number": "数字でなければなりません",
-  "common.error.field-required": "これは必須項目です"
+  "common.error.field-required": "これは必須項目です",
+
+  // Paste
+  "upload.tab.files": "ファイル",
+  "upload.tab.paste": "貼り付け",
+  "upload.paste.placeholder": "テキストまたはコードをここに貼り付けてください...",
+  "upload.paste.language": "言語",
+  "upload.paste.add-text": "テキスト / コードを追加",
+  "upload.snippet.label": "スニペット",
+  "upload.snippet.title-placeholder": "タイトル (例: Nginx Config)",
+  "upload.paste.error.empty": "共有するコンテンツを入力してください",
+  "upload.paste.error.too-large": "貼り付けた内容が最大サイズを超えています",
+  "share.paste.raw": "生テキスト",
+  "share.paste.copy": "コピー",
+  "share.paste.copied": "クリップボードにコピーしました",
+  "share.paste.line-numbers": "行番号",
+  "share.paste.word-wrap": "折り返し",
+  "admin.config.share.paste-max-size": "最大テキストサイズ",
+  "admin.config.share.paste-max-size.description": "貼り付けコンテンツの最大バイト数",
 };

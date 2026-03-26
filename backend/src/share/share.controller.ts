@@ -30,6 +30,7 @@ import { ShareSecurityGuard } from "./guard/shareSecurity.guard";
 import { ShareTokenSecurity } from "./guard/shareTokenSecurity.guard";
 import { ShareService } from "./share.service";
 import { CompletedShareDTO } from "./dto/shareComplete.dto";
+import { CreateSnippetDTO, SnippetDTO } from "./dto/snippet.dto";
 import { ConfigService } from "src/config/config.service";
 @Controller("shares")
 export class ShareController {
@@ -71,6 +72,38 @@ export class ShareController {
     return new ShareMetaDataDTO().from(await this.shareService.getMetaData(id));
   }
 
+  @Get(":id/snippets/:snippetId/raw")
+  @UseGuards(ShareSecurityGuard)
+  async getSnippetRaw(
+    @Param("id") id: string,
+    @Param("snippetId") snippetId: string,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    const content = await this.shareService.getSnippetContent(id, snippetId);
+    response.setHeader("Content-Type", "text/plain; charset=utf-8");
+    return content;
+  }
+
+  @Post(":id/snippets")
+  @UseGuards(ShareOwnerGuard)
+  async addSnippet(
+    @Param("id") id: string,
+    @Body() body: CreateSnippetDTO,
+  ) {
+    return new SnippetDTO().from(
+      await this.shareService.addSnippet(id, body),
+    );
+  }
+
+  @Delete(":id/snippets/:snippetId")
+  @UseGuards(ShareOwnerGuard)
+  async removeSnippet(
+    @Param("id") id: string,
+    @Param("snippetId") snippetId: string,
+  ) {
+    await this.shareService.removeSnippet(id, snippetId);
+  }
+
   @Post()
   @UseGuards(CreateShareGuard)
   async create(
@@ -89,9 +122,8 @@ export class ShareController {
   @UseGuards(CreateShareGuard, ShareOwnerGuard)
   async complete(@Param("id") id: string, @Req() request: Request) {
     const { reverse_share_token } = request.cookies;
-    return new CompletedShareDTO().from(
-      await this.shareService.complete(id, reverse_share_token),
-    );
+    const result = await this.shareService.complete(id, reverse_share_token);
+    return new CompletedShareDTO().from(result as any);
   }
 
   @Delete(":id/complete")

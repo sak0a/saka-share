@@ -540,5 +540,23 @@ export default {
   "common.error.number-too-large": "Must be at most {max}",
   "common.error.exact-length": "Pontosan {length} karakter szükséges",
   "common.error.invalid-number": "Számot kell megadnia",
-  "common.error.field-required": "Ez egy kötelező mező"
+  "common.error.field-required": "Ez egy kötelező mező",
+
+  // Paste
+  "upload.tab.files": "Fájlok",
+  "upload.tab.paste": "Beillesztés",
+  "upload.paste.placeholder": "Illessze be a szöveget vagy kódot ide...",
+  "upload.paste.language": "Nyelv",
+  "upload.paste.add-text": "Szöveg / kód hozzáadása",
+  "upload.snippet.label": "Snippet",
+  "upload.snippet.title-placeholder": "Title (e.g. Nginx Config)",
+  "upload.paste.error.empty": "Kérjük, adjon meg megosztandó tartalmat",
+  "upload.paste.error.too-large": "A beillesztett tartalom meghaladja a maximális méretet",
+  "share.paste.raw": "Nyers szöveg",
+  "share.paste.copy": "Másolás",
+  "share.paste.copied": "Vágólapra másolva",
+  "share.paste.line-numbers": "Sorszámok",
+  "share.paste.word-wrap": "Sortörés",
+  "admin.config.share.paste-max-size": "Maximális szövegméret",
+  "admin.config.share.paste-max-size.description": "A beillesztett tartalom maximális mérete bájtban",
 };

@@ -540,5 +540,23 @@ export default {
   "common.error.number-too-large": "Must be at most {max}",
   "common.error.exact-length": "{length} 자 이어야 합니다.",
   "common.error.invalid-number": "숫자만 가능합니다.",
-  "common.error.field-required": "이 필드는 필수입니다"
+  "common.error.field-required": "이 필드는 필수입니다",
+
+  // Paste
+  "upload.tab.files": "파일",
+  "upload.tab.paste": "붙여넣기",
+  "upload.paste.placeholder": "텍스트 또는 코드를 여기에 붙여넣으세요...",
+  "upload.paste.language": "언어",
+  "upload.paste.add-text": "텍스트 / 코드 추가",
+  "upload.snippet.label": "스니펫",
+  "upload.snippet.title-placeholder": "제목 (예: Nginx Config)",
+  "upload.paste.error.empty": "공유할 내용을 입력해주세요",
+  "upload.paste.error.too-large": "붙여넣은 내용이 최대 크기를 초과합니다",
+  "share.paste.raw": "원본",
+  "share.paste.copy": "복사",
+  "share.paste.copied": "클립보드에 복사됨",
+  "share.paste.line-numbers": "줄 번호",
+  "share.paste.word-wrap": "줄 바꿈",
+  "admin.config.share.paste-max-size": "최대 텍스트 크기",
+  "admin.config.share.paste-max-size.description": "붙여넣기 콘텐츠의 최대 바이트 크기",
 };
