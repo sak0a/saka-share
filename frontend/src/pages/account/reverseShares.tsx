@@ -32,28 +32,6 @@ import { byteToHumanSizeString } from "../../utils/fileSize.util";
 import toast from "../../utils/toast.util";
 
 const useStyles = createStyles((theme) => ({
-  "@keyframes fadeSlideUp": {
-    from: {
-      opacity: 0,
-      transform: "translateY(10px)",
-    },
-    to: {
-      opacity: 1,
-      transform: "translateY(0)",
-    },
-  },
-
-  "@keyframes fadeOut": {
-    from: {
-      opacity: 1,
-      transform: "translateY(0)",
-    },
-    to: {
-      opacity: 0,
-      transform: "translateY(-5px)",
-    },
-  },
-
   row: {
     display: "flex",
     alignItems: "center",
@@ -70,7 +48,7 @@ const useStyles = createStyles((theme) => ({
     borderLeft: "2px solid transparent",
     transition: "all 150ms ease",
     opacity: 0,
-    animation: "$fadeSlideUp 300ms cubic-bezier(0.4, 0, 0.2, 1) forwards",
+    animation: "fadeSlideUp 300ms cubic-bezier(0.4, 0, 0.2, 1) forwards",
 
     "&:hover": {
       borderLeftColor:
@@ -85,7 +63,7 @@ const useStyles = createStyles((theme) => ({
   },
 
   rowDeleting: {
-    animation: "$fadeOut 200ms ease forwards",
+    animation: "fadeOut 200ms ease forwards",
   },
 
   stat: {
