@@ -1,5 +1,3 @@
-import { getCookie } from "cookies-next";
-import * as jose from "jose";
 import api from "./api.service";
 
 const signIn = async (emailOrUsername: string, password: string) => {
@@ -38,12 +36,11 @@ const signOut = async () => {
 
 const refreshAccessToken = async () => {
   try {
-    const accessToken = getCookie("access_token") as string;
-
-    // If the access token expires in less than 2 minutes refresh it
+    const { data } = await api.get("/auth/status");
     if (
-      accessToken &&
-      (jose.decodeJwt(accessToken).exp ?? 0) * 1000 < Date.now() + 2 * 60 * 1000
+      data.isAuthenticated &&
+      data.expiresAt &&
+      data.expiresAt * 1000 < Date.now() + 2 * 60 * 1000
     ) {
       await api.post("/auth/token");
     }

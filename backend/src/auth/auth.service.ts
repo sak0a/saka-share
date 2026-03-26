@@ -335,6 +335,7 @@ export class AuthService {
     const isSecure = this.config.get("general.secureCookies");
     if (accessToken)
       response.cookie("access_token", accessToken, {
+        httpOnly: true,
         sameSite: "lax",
         secure: isSecure,
         maxAge: 1000 * 60 * 60 * 24 * 30 * 3, // 3 months

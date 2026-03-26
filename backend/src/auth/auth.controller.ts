@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   ForbiddenException,
+  Get,
   HttpCode,
   Param,
   Patch,
@@ -11,6 +12,7 @@ import {
   UnauthorizedException,
   UseGuards,
 } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
 import { Throttle } from "@nestjs/throttler";
 import { User } from "@prisma/client";
 import { Request, Response } from "express";
@@ -34,7 +36,21 @@ export class AuthController {
     private authService: AuthService,
     private authTotpService: AuthTotpService,
     private config: ConfigService,
+    private jwtService: JwtService,
   ) {}
+
+  @Get("status")
+  async getAuthStatus(@Req() request: Request) {
+    const token = request.cookies?.access_token;
+    if (!token) return { isAuthenticated: false, expiresAt: null };
+
+    try {
+      const decoded = this.jwtService.decode(token);
+      return { isAuthenticated: true, expiresAt: decoded?.exp ?? null };
+    } catch {
+      return { isAuthenticated: false, expiresAt: null };
+    }
+  }
 
   @Post("signUp")
   @Throttle({
