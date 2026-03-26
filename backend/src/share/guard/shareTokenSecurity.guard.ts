@@ -14,12 +14,12 @@ export class ShareTokenSecurity implements CanActivate {
 
   async canActivate(context: ExecutionContext) {
     const request: Request = context.switchToHttp().getRequest();
-    const shareId = Object.prototype.hasOwnProperty.call(
+    const shareId = (Object.prototype.hasOwnProperty.call(
       request.params,
       "shareId",
     )
       ? request.params.shareId
-      : request.params.id;
+      : request.params.id) as string;
 
     const share = await this.prisma.share.findUnique({
       where: { id: shareId },
