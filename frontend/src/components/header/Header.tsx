@@ -175,13 +175,12 @@ const ThemeToggle = () => {
 
 const LanguageBadge = () => {
   const { classes } = useStyles();
-  const [currentLang, setCurrentLang] = useState(() => {
-    if (typeof document !== "undefined") {
-      const match = document.cookie.match(/(?:^|;\s*)language=([^;]*)/);
-      return match ? match[1] : "en-US";
-    }
-    return "en-US";
-  });
+  const [currentLang, setCurrentLang] = useState("en-US");
+
+  useEffect(() => {
+    const match = document.cookie.match(/(?:^|;\s*)language=([^;]*)/);
+    if (match) setCurrentLang(match[1]);
+  }, []);
 
   const shortCode = currentLang.split("-")[0].toUpperCase();
 
