@@ -70,7 +70,7 @@ const useStyles = createStyles((theme) => ({
     borderLeft: "2px solid transparent",
     transition: "all 150ms ease",
     opacity: 0,
-    animation: "fadeSlideUp 300ms cubic-bezier(0.4, 0, 0.2, 1) forwards",
+    animation: "$fadeSlideUp 300ms cubic-bezier(0.4, 0, 0.2, 1) forwards",
 
     "&:hover": {
       borderLeftColor:
@@ -85,7 +85,7 @@ const useStyles = createStyles((theme) => ({
   },
 
   rowDeleting: {
-    animation: "fadeOut 200ms ease forwards",
+    animation: "$fadeOut 200ms ease forwards",
   },
 
   stat: {
