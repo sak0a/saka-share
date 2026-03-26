@@ -4,6 +4,10 @@ const GlobalStyle = () => {
   return (
     <Global
       styles={(theme) => ({
+        // Kill all border-radius globally
+        "*, *::before, *::after": {
+          borderRadius: "0 !important",
+        },
         a: {
           color: "inherit",
           textDecoration: "none",
@@ -12,12 +16,22 @@ const GlobalStyle = () => {
           {
             background:
               theme.colorScheme == "dark"
-                ? "rgba(50, 50, 50, 0.5)"
-                : "rgba(220, 220, 220, 0.5)",
+                ? "rgba(40, 40, 40, 0.5)"
+                : "rgba(230, 230, 230, 0.5)",
           },
         "table.md td": {
           paddingLeft: "0.5em",
           paddingRight: "0.5em",
+        },
+        "@keyframes accountFadeIn": {
+          from: {
+            opacity: 0,
+            transform: "translateY(8px)",
+          },
+          to: {
+            opacity: 1,
+            transform: "translateY(0)",
+          },
         },
       })}
     />
