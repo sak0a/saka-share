@@ -2,7 +2,6 @@ import {
   Badge,
   Button,
   Center,
-  Container,
   Group,
   Paper,
   PasswordInput,
@@ -19,6 +18,7 @@ import { TbAuth2Fa } from "react-icons/tb";
 import { FormattedMessage } from "react-intl";
 import * as yup from "yup";
 import Meta from "../../components/Meta";
+import AccountLayout from "../../components/account/AccountLayout";
 import LanguagePicker from "../../components/account/LanguagePicker";
 import ThemeSwitcher from "../../components/account/ThemeSwitcher";
 import showEnableTotpModal from "../../components/account/showEnableTotpModal";
@@ -136,7 +136,7 @@ const Account = () => {
   return (
     <>
       <Meta title={t("account.title")} />
-      <Container size="sm">
+      <AccountLayout>
         <Title order={3} mb="xs">
           <FormattedMessage id="account.title" />
         </Title>
@@ -423,7 +423,7 @@ const Account = () => {
             </Button>
           </Stack>
         </Center>
-      </Container>
+      </AccountLayout>
     </>
   );
 };
