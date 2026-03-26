@@ -1,22 +1,47 @@
 import { ActionIcon, Avatar, Menu } from "@mantine/core";
 import Link from "next/link";
-import { TbDoorExit, TbSettings, TbUser } from "react-icons/tb";
+import {
+  TbArrowLoopLeft,
+  TbDoorExit,
+  TbLink,
+  TbSettings,
+  TbUser,
+} from "react-icons/tb";
 import useUser from "../../hooks/user.hook";
 import authService from "../../services/auth.service";
-import { FormattedMessage, useIntl } from "react-intl";
+import { FormattedMessage } from "react-intl";
 
 const ActionAvatar = () => {
   const { user } = useUser();
 
   return (
-    <Menu position="bottom-start" withinPortal>
+    <Menu position="bottom-end" withinPortal>
       <Menu.Target>
         <ActionIcon>
           <Avatar size={28} />
         </ActionIcon>
       </Menu.Target>
       <Menu.Dropdown>
-        <Menu.Item component={Link} href="/account" icon={<TbUser size={14} />}>
+        <Menu.Item
+          component={Link}
+          href="/account/shares"
+          icon={<TbLink size={14} />}
+        >
+          <FormattedMessage id="navbar.links.shares" />
+        </Menu.Item>
+        <Menu.Item
+          component={Link}
+          href="/account/reverseShares"
+          icon={<TbArrowLoopLeft size={14} />}
+        >
+          <FormattedMessage id="navbar.links.reverse" />
+        </Menu.Item>
+        <Menu.Divider />
+        <Menu.Item
+          component={Link}
+          href="/account"
+          icon={<TbUser size={14} />}
+        >
           <FormattedMessage id="navbar.avatar.account" />
         </Menu.Item>
         {user!.isAdmin && (
@@ -28,7 +53,7 @@ const ActionAvatar = () => {
             <FormattedMessage id="navbar.avatar.admin" />
           </Menu.Item>
         )}
-
+        <Menu.Divider />
         <Menu.Item
           onClick={async () => {
             await authService.signOut();
