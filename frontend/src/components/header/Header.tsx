@@ -44,6 +44,14 @@ const useStyles = createStyles((theme) => ({
   root: {
     position: "relative",
     zIndex: 1,
+    borderBottom: `1px solid ${
+      theme.colorScheme === "dark" ? "#1a1a1a" : theme.colors.gray[2]
+    }`,
+    backgroundColor:
+      theme.colorScheme === "dark"
+        ? "rgba(10, 10, 10, 0.85)"
+        : "rgba(255, 255, 255, 0.9)",
+    backdropFilter: "blur(12px)",
   },
 
   dropdown: {
@@ -56,6 +64,11 @@ const useStyles = createStyles((theme) => ({
     borderTopLeftRadius: 0,
     borderTopWidth: 0,
     overflow: "hidden",
+    backgroundColor:
+      theme.colorScheme === "dark"
+        ? "rgba(10, 10, 10, 0.95)"
+        : theme.white,
+    backdropFilter: "blur(12px)",
 
     [theme.fn.largerThan("sm")]: {
       display: "none",
@@ -81,40 +94,80 @@ const useStyles = createStyles((theme) => ({
     },
   },
 
+  logoGroup: {
+    transition: "opacity 200ms ease",
+    "&:hover": {
+      opacity: 0.7,
+    },
+  },
+
+  logoText: {
+    fontFamily: "'Chakra Petch', sans-serif",
+    fontWeight: 800,
+    textTransform: "uppercase" as const,
+    letterSpacing: "0.12em",
+    fontSize: "0.85rem",
+  },
+
   link: {
     display: "block",
     lineHeight: 1,
     padding: "8px 12px",
-    borderRadius: theme.radius.sm,
     textDecoration: "none",
+    fontFamily: "'Fira Code', monospace",
+    fontSize: "0.8rem",
+    fontWeight: 500,
+    letterSpacing: "0.02em",
     color:
       theme.colorScheme === "dark"
-        ? theme.colors.dark[0]
-        : theme.colors.gray[7],
-    fontSize: theme.fontSizes.sm,
-    fontWeight: 500,
+        ? theme.colors.dark[1]
+        : theme.colors.gray[6],
+    transition: "all 200ms ease",
+    position: "relative" as const,
 
     "&:hover": {
-      backgroundColor:
-        theme.colorScheme === "dark"
-          ? theme.colors.dark[6]
-          : theme.colors.gray[0],
+      color:
+        theme.colorScheme === "dark" ? "#8b5cf6" : theme.colors.gray[9],
+      backgroundColor: "transparent",
+    },
+
+    "&::after": {
+      content: "''",
+      position: "absolute" as const,
+      bottom: 2,
+      left: 12,
+      right: 12,
+      height: 1,
+      backgroundColor: "#8b5cf6",
+      transform: "scaleX(0)",
+      transformOrigin: "left",
+      transition: "transform 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+    },
+
+    "&:hover::after": {
+      transform: "scaleX(1)",
     },
 
     [theme.fn.smallerThan("sm")]: {
-      borderRadius: 0,
       padding: theme.spacing.md,
+      "&::after": {
+        display: "none",
+      },
+      "&:hover": {
+        backgroundColor:
+          theme.colorScheme === "dark"
+            ? theme.colors.dark[5]
+            : theme.colors.gray[0],
+      },
     },
   },
 
   linkActive: {
     "&, &:hover": {
-      backgroundColor:
-        theme.colorScheme === "dark"
-          ? theme.fn.rgba(theme.colors[theme.primaryColor][9], 0.25)
-          : theme.colors[theme.primaryColor][0],
-      color:
-        theme.colors[theme.primaryColor][theme.colorScheme === "dark" ? 3 : 7],
+      color: theme.colorScheme === "dark" ? "#8b5cf6" : theme.colors.gray[9],
+    },
+    "&::after": {
+      transform: "scaleX(1)",
     },
   },
 
@@ -122,10 +175,10 @@ const useStyles = createStyles((theme) => ({
     display: "inline-flex",
     alignItems: "center",
     padding: "4px 8px",
+    fontFamily: "'Fira Code', monospace",
     fontSize: 11,
-    fontWeight: 600,
-    letterSpacing: "0.5px",
-    borderRadius: theme.radius.sm,
+    fontWeight: 500,
+    letterSpacing: "0.08em",
     border: `1px solid ${
       theme.colorScheme === "dark"
         ? theme.colors.dark[4]
@@ -133,17 +186,32 @@ const useStyles = createStyles((theme) => ({
     }`,
     color:
       theme.colorScheme === "dark"
-        ? theme.colors.dark[0]
+        ? theme.colors.dark[1]
         : theme.colors.gray[7],
     backgroundColor: "transparent",
     cursor: "pointer",
-    transition: "background-color 150ms ease",
+    transition: "all 200ms ease",
 
     "&:hover": {
-      backgroundColor:
-        theme.colorScheme === "dark"
-          ? theme.colors.dark[6]
-          : theme.colors.gray[0],
+      borderColor: theme.colorScheme === "dark" ? "#8b5cf6" : theme.colors.gray[5],
+      color: theme.colorScheme === "dark" ? "#8b5cf6" : theme.colors.gray[9],
+    },
+  },
+
+  uploadButton: {
+    fontFamily: "'Chakra Petch', sans-serif",
+    fontWeight: 700,
+    textTransform: "uppercase" as const,
+    letterSpacing: "0.08em",
+    fontSize: "0.75rem",
+    backgroundColor: theme.colorScheme === "dark" ? "#8b5cf6" : theme.black,
+    color: theme.colorScheme === "dark" ? "#0a0a0a" : theme.white,
+    border: "none",
+    transition: "all 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+
+    "&:hover": {
+      backgroundColor: theme.colorScheme === "dark" ? "#a78bfa" : theme.colors.gray[8],
+      transform: "translateY(-1px)",
     },
   },
 }));
@@ -287,9 +355,9 @@ const Header = () => {
               key={link.label}
               component={Link}
               href={link.link ?? ""}
-              variant="filled"
               size="xs"
               leftIcon={<TbUpload size={14} />}
+              className={classes.uploadButton}
               onClick={() => toggleOpened.toggle()}
             >
               {link.label}
@@ -317,9 +385,11 @@ const Header = () => {
     <MantineHeader height={HEADER_HEIGHT} mb={40} className={classes.root}>
       <Container className={classes.header}>
         <Link href="/" passHref>
-          <Group>
-            <Logo height={35} width={35} />
-            <Text weight={600}>{config.get("general.appName")}</Text>
+          <Group className={classes.logoGroup} spacing={10}>
+            <Logo height={28} width={28} />
+            <Text className={classes.logoText}>
+              {config.get("general.appName")}
+            </Text>
           </Group>
         </Link>
         <Group spacing={5} className={classes.links}>

@@ -32,9 +32,7 @@ const useStyles = createStyles((theme) => ({
       gap: 0,
       marginBottom: theme.spacing.md,
       borderBottom: `1px solid ${
-        theme.colorScheme === "dark"
-          ? theme.colors.dark[4]
-          : theme.colors.gray[3]
+        theme.colorScheme === "dark" ? "#1a1a1a" : theme.colors.gray[3]
       }`,
     },
   },
@@ -44,20 +42,24 @@ const useStyles = createStyles((theme) => ({
     alignItems: "center",
     gap: theme.spacing.xs,
     padding: "10px 14px",
+    fontFamily: "'Fira Code', monospace",
     color:
       theme.colorScheme === "dark"
         ? theme.colors.dark[1]
         : theme.colors.gray[7],
-    fontSize: theme.fontSizes.sm,
+    fontSize: "0.8rem",
     fontWeight: 500,
-    borderLeft: "2px solid transparent",
-    transition: "all 150ms ease",
+    letterSpacing: "0.02em",
+    borderLeft: `2px solid transparent`,
+    transition: "all 200ms ease",
     textDecoration: "none",
 
     "&:hover": {
+      color:
+        theme.colorScheme === "dark" ? "#8b5cf6" : theme.colors.gray[9],
       backgroundColor:
         theme.colorScheme === "dark"
-          ? theme.colors.dark[5]
+          ? "rgba(139, 92, 246, 0.03)"
           : theme.colors.gray[1],
     },
 
@@ -72,31 +74,25 @@ const useStyles = createStyles((theme) => ({
 
   navLinkActive: {
     color:
-      theme.colorScheme === "dark"
-        ? theme.colors.dark[0]
-        : theme.colors.gray[9],
+      theme.colorScheme === "dark" ? "#8b5cf6" : theme.colors.gray[9],
     borderLeftColor:
-      theme.colorScheme === "dark"
-        ? theme.colors.printstream[4]
-        : theme.colors.printstream[6],
+      theme.colorScheme === "dark" ? "#8b5cf6" : theme.black,
     backgroundColor:
       theme.colorScheme === "dark"
-        ? theme.colors.dark[5]
+        ? "rgba(139, 92, 246, 0.03)"
         : theme.colors.gray[0],
 
     [theme.fn.smallerThan("sm")]: {
       borderLeftColor: "transparent",
       borderBottomColor:
-        theme.colorScheme === "dark"
-          ? theme.colors.printstream[4]
-          : theme.colors.printstream[6],
+        theme.colorScheme === "dark" ? "#8b5cf6" : theme.black,
     },
   },
 
   content: {
     flex: 1,
     minWidth: 0,
-    animation: "accountFadeIn 200ms ease forwards",
+    animation: "accountFadeIn 300ms ease forwards",
   },
 }));
 

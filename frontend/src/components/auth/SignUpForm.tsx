@@ -61,19 +61,60 @@ const SignUpForm = () => {
   };
 
   return (
-    <Container size={420} my={40}>
-      <Title order={2} align="center" weight={900}>
+    <Container
+      size={420}
+      my={40}
+      sx={{
+        animation:
+          "staggerFadeIn 500ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards",
+      }}
+    >
+      <Title
+        order={2}
+        align="center"
+        weight={900}
+        sx={{
+          fontFamily: "'Chakra Petch', sans-serif",
+          textTransform: "uppercase",
+          letterSpacing: "0.08em",
+        }}
+      >
         <FormattedMessage id="signup.title" />
       </Title>
       {config.get("share.allowRegistration") && (
-        <Text color="dimmed" size="sm" align="center" mt={5}>
+        <Text
+          color="dimmed"
+          size="sm"
+          align="center"
+          mt={5}
+          sx={{ fontFamily: "'Fira Code', monospace", fontSize: "0.8rem" }}
+        >
           <FormattedMessage id="signup.description" />{" "}
           <Anchor component={Link} href={"signIn"} size="sm">
             <FormattedMessage id="signup.button.signin" />
           </Anchor>
         </Text>
       )}
-      <Paper withBorder shadow="md" p={30} mt={30}>
+      <Paper
+        withBorder
+        shadow="md"
+        p={30}
+        mt={30}
+        sx={(theme) => ({
+          border: `1px solid ${
+            theme.colorScheme === "dark" ? "#2a2a2a" : theme.colors.gray[3]
+          }`,
+          backgroundColor:
+            theme.colorScheme === "dark" ? "#111111" : theme.white,
+          transition: "border-color 400ms ease",
+          "&:hover": {
+            borderColor:
+              theme.colorScheme === "dark"
+                ? "rgba(139, 92, 246, 0.2)"
+                : theme.colors.gray[4],
+          },
+        })}
+      >
         <form
           onSubmit={form.onSubmit((values) =>
             signUp(values.email, values.username, values.password),
@@ -96,7 +137,23 @@ const SignUpForm = () => {
             mt="md"
             {...form.getInputProps("password")}
           />
-          <Button fullWidth mt="xl" type="submit">
+          <Button
+            fullWidth
+            mt="xl"
+            type="submit"
+            sx={(theme) => ({
+              backgroundColor:
+                theme.colorScheme === "dark" ? "#8b5cf6" : theme.black,
+              color:
+                theme.colorScheme === "dark" ? "#0a0a0a" : theme.white,
+              "&:hover": {
+                backgroundColor:
+                  theme.colorScheme === "dark"
+                    ? "#a78bfa"
+                    : theme.colors.gray[8],
+              },
+            })}
+          >
             <FormattedMessage id="signup.button.submit" />
           </Button>
         </form>

@@ -6,11 +6,47 @@ import { useRouter } from "next/router";
 import { FormattedMessage } from "react-intl";
 import { safeRedirectPath } from "../utils/router.util";
 
-const useStyle = createStyles({
-  title: {
-    fontSize: 100,
+const useStyle = createStyles((theme) => ({
+  wrapper: {
+    animation: "staggerFadeIn 500ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards",
+    paddingTop: 40,
   },
-});
+
+  title: {
+    fontFamily: "'Chakra Petch', sans-serif",
+    fontSize: 80,
+    fontWeight: 900,
+    textTransform: "uppercase" as const,
+    letterSpacing: "-0.03em",
+    lineHeight: 1,
+    color: theme.colorScheme === "dark" ? theme.colors.dark[1] : theme.colors.gray[3],
+
+    [theme.fn.smallerThan("sm")]: {
+      fontSize: 48,
+    },
+  },
+
+  message: {
+    fontFamily: "'Fira Code', monospace",
+    fontSize: "0.9rem",
+    lineHeight: 1.6,
+  },
+
+  button: {
+    backgroundColor: theme.colorScheme === "dark" ? "#8b5cf6" : theme.black,
+    color: theme.colorScheme === "dark" ? "#0a0a0a" : theme.white,
+    border: "none",
+    fontFamily: "'Chakra Petch', sans-serif",
+    fontWeight: 700,
+    textTransform: "uppercase" as const,
+    letterSpacing: "0.08em",
+    transition: "all 200ms ease",
+    "&:hover": {
+      backgroundColor: theme.colorScheme === "dark" ? "#a78bfa" : theme.colors.gray[8],
+      transform: "translateY(-2px)",
+    },
+  },
+}));
 
 export default function Error() {
   const { classes } = useStyle();
@@ -26,11 +62,11 @@ export default function Error() {
   return (
     <>
       <Meta title={t("error.title")} />
-      <Stack align="center">
+      <Stack align="center" className={classes.wrapper}>
         <Title order={3} className={classes.title}>
           {t("error.description")}
         </Title>
-        <Text mt="xl" size="lg">
+        <Text mt="xl" size="lg" className={classes.message}>
           <FormattedMessage
             id={`error.msg.${router.query.error || "default"}`}
             values={Object.fromEntries(
@@ -40,6 +76,7 @@ export default function Error() {
         </Text>
         <Button
           mt="xl"
+          className={classes.button}
           onClick={() =>
             router.push(safeRedirectPath(router.query.redirect as string))
           }

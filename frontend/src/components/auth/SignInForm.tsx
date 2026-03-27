@@ -29,7 +29,35 @@ import { safeRedirectPath } from "../../utils/router.util";
 import toast from "../../utils/toast.util";
 
 const useStyles = createStyles((theme) => ({
+  wrapper: {
+    animation: "staggerFadeIn 500ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards",
+  },
+
+  title: {
+    fontFamily: "'Chakra Petch', sans-serif",
+    textTransform: "uppercase" as const,
+    letterSpacing: "0.08em",
+  },
+
+  card: {
+    border: `1px solid ${
+      theme.colorScheme === "dark" ? "#2a2a2a" : theme.colors.gray[3]
+    }`,
+    backgroundColor:
+      theme.colorScheme === "dark" ? "#111111" : theme.white,
+    transition: "border-color 400ms ease",
+
+    "&:hover": {
+      borderColor:
+        theme.colorScheme === "dark"
+          ? "rgba(139, 92, 246, 0.2)"
+          : theme.colors.gray[4],
+    },
+  },
+
   signInWith: {
+    fontFamily: "'Fira Code', monospace",
+    fontSize: "0.8rem",
     fontWeight: 500,
     "&:before": {
       content: "''",
@@ -42,7 +70,10 @@ const useStyles = createStyles((theme) => ({
       display: "block",
     },
   },
+
   or: {
+    fontFamily: "'Fira Code', monospace",
+    fontSize: "0.8rem",
     "&:before": {
       content: "''",
       flex: 1,
@@ -51,7 +82,7 @@ const useStyles = createStyles((theme) => ({
       borderTopStyle: "solid",
       borderColor:
         theme.colorScheme === "dark"
-          ? theme.colors.dark[3]
+          ? theme.colors.dark[4]
           : theme.colors.gray[4],
     },
     "&:after": {
@@ -62,8 +93,24 @@ const useStyles = createStyles((theme) => ({
       borderTopStyle: "solid",
       borderColor:
         theme.colorScheme === "dark"
-          ? theme.colors.dark[3]
+          ? theme.colors.dark[4]
           : theme.colors.gray[4],
+    },
+  },
+
+  oauthButton: {
+    border: `1px solid ${
+      theme.colorScheme === "dark" ? "#2a2a2a" : theme.colors.gray[3]
+    }`,
+    backgroundColor: "transparent",
+    transition: "all 200ms ease",
+
+    "&:hover": {
+      borderColor: theme.colorScheme === "dark" ? "#8b5cf6" : theme.colors.gray[5],
+      backgroundColor:
+        theme.colorScheme === "dark"
+          ? "rgba(139, 92, 246, 0.05)"
+          : theme.colors.gray[0],
     },
   },
 }));
@@ -147,19 +194,25 @@ const SignInForm = ({ redirectPath }: { redirectPath: string }) => {
     );
 
   return (
-    <Container size={420} my={40}>
-      <Title order={2} align="center" weight={900}>
+    <Container size={420} my={40} className={classes.wrapper}>
+      <Title order={2} align="center" weight={900} className={classes.title}>
         <FormattedMessage id="signin.title" />
       </Title>
       {config.get("share.allowRegistration") && (
-        <Text color="dimmed" size="sm" align="center" mt={5}>
+        <Text
+          color="dimmed"
+          size="sm"
+          align="center"
+          mt={5}
+          sx={{ fontFamily: "'Fira Code', monospace", fontSize: "0.8rem" }}
+        >
           <FormattedMessage id="signin.description" />{" "}
           <Anchor component={Link} href={"signUp"} size="sm">
             <FormattedMessage id="signin.button.signup" />
           </Anchor>
         </Text>
       )}
-      <Paper withBorder shadow="md" p={30} mt={30}>
+      <Paper withBorder shadow="md" p={30} mt={30} className={classes.card}>
         {config.get("oauth.disablePassword") || (
           <form
             onSubmit={form.onSubmit((values) => {
@@ -184,7 +237,21 @@ const SignInForm = ({ redirectPath }: { redirectPath: string }) => {
                 </Anchor>
               </Group>
             )}
-            <Button fullWidth mt="xl" type="submit">
+            <Button
+              fullWidth
+              mt="xl"
+              type="submit"
+              sx={(theme) => ({
+                backgroundColor:
+                  theme.colorScheme === "dark" ? "#8b5cf6" : theme.black,
+                color:
+                  theme.colorScheme === "dark" ? "#0a0a0a" : theme.white,
+                "&:hover": {
+                  backgroundColor:
+                    theme.colorScheme === "dark" ? "#a78bfa" : theme.colors.gray[8],
+                },
+              })}
+            >
               <FormattedMessage id="signin.button.submit" />
             </Button>
           </form>
@@ -209,6 +276,7 @@ const SignInForm = ({ redirectPath }: { redirectPath: string }) => {
                   href={getOAuthUrl(window.location.origin, provider)}
                   variant="light"
                   fullWidth
+                  className={classes.oauthButton}
                 >
                   {getOAuthIcon(provider)}
                   {"\u2002" + t(`signIn.oauth.${provider}`)}

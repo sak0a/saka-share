@@ -22,28 +22,31 @@ const useStyles = createStyles((theme) => ({
   inner: {
     display: "flex",
     justifyContent: "space-between",
-    paddingTop: `calc(${theme.spacing.md} * 4)`,
-    paddingBottom: `calc(${theme.spacing.md} * 4)`,
+    paddingTop: `calc(${theme.spacing.md} * 5)`,
+    paddingBottom: `calc(${theme.spacing.md} * 5)`,
+    gap: theme.spacing.xl,
   },
 
   content: {
-    maxWidth: 480,
-    marginRight: `calc(${theme.spacing.md} * 3)`,
+    maxWidth: 560,
+    animation: "staggerFadeIn 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards",
 
     [theme.fn.smallerThan("md")]: {
       maxWidth: "100%",
-      marginRight: 0,
     },
   },
 
   title: {
+    fontFamily: "'Chakra Petch', sans-serif",
     color: theme.colorScheme === "dark" ? theme.white : theme.black,
-    fontSize: 44,
-    lineHeight: 1.2,
+    fontSize: 52,
+    lineHeight: 1.1,
     fontWeight: 900,
+    letterSpacing: "-0.03em",
+    textTransform: "uppercase" as const,
 
     [theme.fn.smallerThan("xs")]: {
-      fontSize: 28,
+      fontSize: 32,
     },
   },
 
@@ -54,6 +57,13 @@ const useStyles = createStyles((theme) => ({
   },
 
   image: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    animation:
+      "staggerFadeIn 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94) 200ms forwards",
+    opacity: 0,
+
     [theme.fn.smallerThan("md")]: {
       display: "none",
     },
@@ -61,12 +71,92 @@ const useStyles = createStyles((theme) => ({
 
   highlight: {
     position: "relative",
-    backgroundColor:
-      theme.colorScheme === "dark"
-        ? theme.fn.rgba(theme.colors[theme.primaryColor][6], 0.55)
-        : theme.colors[theme.primaryColor][0],
-    borderRadius: theme.radius.sm,
-    padding: "4px 12px",
+    display: "inline",
+    color: theme.colorScheme === "dark" ? "#0a0a0a" : theme.white,
+    backgroundColor: theme.colorScheme === "dark" ? "#8b5cf6" : theme.black,
+    padding: "2px 10px",
+    lineHeight: 1.3,
+  },
+
+  description: {
+    fontFamily: "'Fira Code', monospace",
+    color: theme.colorScheme === "dark" ? theme.colors.dark[1] : theme.colors.gray[6],
+    fontSize: "0.9rem",
+    lineHeight: 1.6,
+    animation:
+      "staggerFadeIn 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94) 100ms forwards",
+    opacity: 0,
+  },
+
+  featureList: {
+    animation:
+      "staggerFadeIn 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94) 200ms forwards",
+    opacity: 0,
+  },
+
+  featureItem: {
+    fontFamily: "'Fira Code', monospace",
+    fontSize: "0.85rem",
+    "& b": {
+      fontFamily: "'Chakra Petch', sans-serif",
+      fontWeight: 700,
+      textTransform: "uppercase" as const,
+      letterSpacing: "0.03em",
+    },
+  },
+
+  buttons: {
+    animation:
+      "staggerFadeIn 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94) 300ms forwards",
+    opacity: 0,
+  },
+
+  primaryButton: {
+    backgroundColor: theme.colorScheme === "dark" ? "#8b5cf6" : theme.black,
+    color: theme.colorScheme === "dark" ? "#0a0a0a" : theme.white,
+    border: "none",
+    fontFamily: "'Chakra Petch', sans-serif",
+    fontWeight: 700,
+    textTransform: "uppercase" as const,
+    letterSpacing: "0.1em",
+    transition: "all 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+
+    "&:hover": {
+      backgroundColor: theme.colorScheme === "dark" ? "#a78bfa" : theme.colors.gray[8],
+      transform: "translateY(-2px)",
+    },
+  },
+
+  sourceButton: {
+    fontFamily: "'Fira Code', monospace",
+    fontWeight: 500,
+    letterSpacing: "0.04em",
+    border: `1px solid ${
+      theme.colorScheme === "dark" ? "#2a2a2a" : theme.colors.gray[3]
+    }`,
+    transition: "all 200ms ease",
+
+    "&:hover": {
+      borderColor: theme.colorScheme === "dark" ? "#8b5cf6" : theme.colors.gray[5],
+      transform: "translateY(-2px)",
+    },
+  },
+
+  logoWrapper: {
+    position: "relative",
+    padding: 40,
+
+    "&::before": {
+      content: "''",
+      position: "absolute",
+      inset: 0,
+      border: `1px solid ${
+        theme.colorScheme === "dark"
+          ? "rgba(139, 92, 246, 0.15)"
+          : theme.colors.gray[2]
+      }`,
+      animation: "borderPulse 3s ease-in-out infinite",
+    },
   },
 }));
 
@@ -114,7 +204,7 @@ export default function Home() {
                 }}
               />
             </Title>
-            <Text color="dimmed" mt="md">
+            <Text className={classes.description} mt="lg">
               <FormattedMessage id="home.description" />
             </Text>
 
@@ -122,45 +212,53 @@ export default function Home() {
               mt={30}
               spacing="sm"
               size="sm"
+              className={classes.featureList}
               icon={
-                <ThemeIcon size={20}>
+                <ThemeIcon
+                  size={20}
+                  sx={(theme) => ({
+                    backgroundColor:
+                      theme.colorScheme === "dark" ? "#8b5cf6" : theme.black,
+                    color:
+                      theme.colorScheme === "dark" ? "#0a0a0a" : theme.white,
+                  })}
+                >
                   <TbCheck size={12} />
                 </ThemeIcon>
               }
             >
               <List.Item>
-                <div>
+                <div className={classes.featureItem}>
                   <b>
                     <FormattedMessage id="home.bullet.a.name" />
                   </b>{" "}
-                  - <FormattedMessage id="home.bullet.a.description" />
+                  — <FormattedMessage id="home.bullet.a.description" />
                 </div>
               </List.Item>
               <List.Item>
-                <div>
+                <div className={classes.featureItem}>
                   <b>
                     <FormattedMessage id="home.bullet.b.name" />
                   </b>{" "}
-                  - <FormattedMessage id="home.bullet.b.description" />
+                  — <FormattedMessage id="home.bullet.b.description" />
                 </div>
               </List.Item>
               <List.Item>
-                <div>
+                <div className={classes.featureItem}>
                   <b>
                     <FormattedMessage id="home.bullet.c.name" />
                   </b>{" "}
-                  - <FormattedMessage id="home.bullet.c.description" />
+                  — <FormattedMessage id="home.bullet.c.description" />
                 </div>
               </List.Item>
             </List>
 
-            <Group mt={30}>
+            <Group mt={30} className={classes.buttons}>
               <Button
                 component={Link}
                 href={getButtonHref()}
-               
                 size="md"
-                className={classes.control}
+                className={classes.primaryButton}
               >
                 <FormattedMessage id="home.button.start" />
               </Button>
@@ -169,16 +267,17 @@ export default function Home() {
                 href="https://github.com/sak0a/saka-share"
                 target="_blank"
                 variant="default"
-               
                 size="md"
-                className={classes.control}
+                className={classes.sourceButton}
               >
                 <FormattedMessage id="home.button.source" />
               </Button>
             </Group>
           </div>
           <Group className={classes.image} align="center">
-            <Logo width={200} height={200} />
+            <div className={classes.logoWrapper}>
+              <Logo width={160} height={160} />
+            </div>
           </Group>
         </div>
       </Container>
